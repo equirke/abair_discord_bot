@@ -75,7 +75,11 @@ CD_PHOMEME_MAP = {
   "v":"vˠ"
 }
 
-def map_phoneme(c):
+def map_phoneme(c, dialect):
+	if dialect == "ga_MU" and c in CD_PHOMEME_MAP:
+		return CD_PHOMEME_MAP[c]
+	if dialect == "ga_UL" and c in GD_PHOMEME_MAP:
+		return GD_PHOMEME_MAP[c]
 	if c not in PHONEME_MAP:
 		return c
 	return PHONEME_MAP[c]
@@ -83,7 +87,7 @@ def map_phoneme(c):
 DIALECTS = {
   "CD":"ga_MU",
   "GD":"ga_UL",
-  "CF":"ga_CO"
+  "CO":"ga_CO"
 }
 
 def map_dialect(d):

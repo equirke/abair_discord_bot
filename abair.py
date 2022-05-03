@@ -14,7 +14,7 @@ async def say(ctx, dialect, phrase):
 		await ctx.send("Roghnaigh canúint led thoil. Tá trí rogha agat. CD (Corca Dhuibhne), GD (Gaoth Dobhar) agus CO (Conamara)")
 	if len(phrase) > 2000:
 		await ctx.send("uasmhéid 2000 caractar")
-	text, sound = get_pronounciation(phrase)
+	text, sound = get_pronounciation(phrase, map_dialect(dialect))
 	await ctx.send(text, file=File(io.BytesIO(sound), filename="abair.mp3"))
 	
 bot.run(os.getenv("BOT_TOKEN"))

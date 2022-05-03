@@ -119,7 +119,7 @@ def get_pronounciation(input_string, dialect):
 			for syllable in word:
 				for phoneme in syllable:
 					#result += PHONEME_MAP[phoneme.get('symbol')]
-					result += map_phoneme(phoneme.get('symbol'))
+					result += map_phoneme(phoneme.get('symbol'), dialect)
 			result += ' '
 	
 	soundFile = requests.get(soundFileURL, cookies=request_cookies)
