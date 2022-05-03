@@ -1,6 +1,6 @@
 import requests
 import xml.etree.ElementTree as ET
-from map_phoneme import map_phoneme 
+from constants import map_phoneme 
 
 
 
@@ -98,8 +98,8 @@ test_xml ="""<?xml version="1.0"?>
 """
 
 
-def get_pronounciation(input_string):
-	payload = {"dialect":(None,"ga_UL"), "inputText": (None,input_string), "synth-mode":(None,"dnn"), "speed":(None,"1.0"), "pitch":(None, "1.0"), "speaker":(None,"female")}
+def get_pronounciation(input_string, dialect):
+	payload = {"dialect":(None,dialect), "inputText": (None,input_string), "synth-mode":(None,"dnn"), "speed":(None,"1.0"), "pitch":(None, "1.0"), "speaker":(None,"female")}
 
 	request_cookies = {"privacy":"accepted","synthInput":input_string}
 	response = requests.post("https://abair.ie/action/synthesize", cookies=request_cookies, files=payload) 

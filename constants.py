@@ -79,3 +79,14 @@ def map_phoneme(c):
 	if c not in PHONEME_MAP:
 		return c
 	return PHONEME_MAP[c]
+
+DIALECTS = {
+  "CD":"ga_MU",
+  "GD":"ga_UL",
+  "CF":"ga_CO"
+}
+
+def map_dialect(d):
+	if d not in DIALECTS:
+		return None
+	return DIALECTS[d]
