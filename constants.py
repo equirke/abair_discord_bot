@@ -85,9 +85,9 @@ def map_phoneme(c, dialect):
 	return PHONEME_MAP[c]
 
 DIALECTS = {
-  "CD":"ga_MU",
-  "GD":"ga_UL",
-  "CO":"ga_CO"
+  "GM":"ga_MU",
+  "GU":"ga_UL",
+  "GC":"ga_CO"
 }
 
 def map_dialect(d):

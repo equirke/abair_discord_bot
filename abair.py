@@ -11,10 +11,10 @@ bot = commands.Bot(command_prefix='a!', intents=intents)
 @bot.command(name='abair')
 async def say(ctx, dialect, phrase):
 	if map_dialect(dialect) == None:
-		await ctx.send("Roghnaigh canúint led thoil. Tá trí rogha agat. CD (Corca Dhuibhne), GD (Gaoth Dobhar) agus CO (Conamara)")
+		await ctx.send("Roghnaigh canúint led thoil. Tá trí rogha agat. GM (Gaolainn na Mumhan, Corca Dhuibhne), GU (Gaeilig Uladh, Gaoth Dobhar) agus GC (Gaeilge Chonnacht, Conamara)")
 	if len(phrase) > 2000:
 		await ctx.send("uasmhéid 2000 caractar")
-	text, sound = get_pronounciation(phrase, map_dialect(dialect))
-	await ctx.send(text, file=File(io.BytesIO(sound), filename="abair.mp3"))
+	ipa_text, sound = get_pronounciation(phrase, map_dialect(dialect))
+	await ctx.send(phrase + "\n" + ipa_text, file=File(io.BytesIO(sound), filename="abair.mp3"))
 	
 bot.run(os.getenv("BOT_TOKEN"))
