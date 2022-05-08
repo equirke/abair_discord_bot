@@ -6,7 +6,7 @@ from request_abair import get_pronounciation
 from constants import map_dialect
 intents = Intents(messages=True, guilds=True)
 
-bot = commands.Bot(command_prefix='a!', intents=intents)
+bot = commands.Bot(command_prefix='!', intents=intents)
 
 @bot.command(name='abair')
 async def say(ctx, *args):
