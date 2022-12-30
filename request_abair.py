@@ -1,6 +1,9 @@
 import requests
 import xml.etree.ElementTree as ET
-from constants import map_phoneme 
+from constants import map_phoneme
+from constants import DIALECTS_VOICE
+import json
+import base64
 
 
 
@@ -97,21 +100,27 @@ test_xml ="""<?xml version="1.0"?>
 </utterance>
 """
 
+synthesise_request_text = """{"synthinput":{
+"text":"cén chaoi a bhfuil tú\n","ssml":"string"},"voiceparams":{"languageCode":"ga-IE","name":"ga_CO_snc_nemo","ssmlGen
+der":"UNSPECIFIED"},"audioconfig":{"audioEncoding":"LINEAR16","speakingRate":1,"pitch":1,"volumeGainDb":1,"htsParams":"s
+tring","sampleRateHertz":0,"effectsProfileId":[]},"outputType":"JSON"}"""
 
-def get_pronounciation(input_string, dialect):
-	payload = {"dialect":(None,dialect), "inputText": (None,input_string), "synth-mode":(None,"dnn"), "speed":(None,"1.0"), "pitch":(None, "1.0"), "speaker":(None,"female")}
 
+def get_pronounciation_text(input_string, dialect):
+	text_request_payload = {"dialect":(None,dialect), "inputText": (None,input_string), "synth-mode":(None,"dnn"), "speed":(None,"1.0"), "pitch":(None, "1.0"), "speaker":(None,"female")}
+	
 	request_cookies = {"privacy":"accepted","synthInput":input_string}
-	response = requests.post("https://abair.ie/action/synthesize", cookies=request_cookies, files=payload) 
-
-
-	xml = ET.fromstring(response.content)
-
-	soundFileURI = xml.find('sentence').get('soundfilename')
-	soundFileURL = "https://abair.ie/audio/" + soundFileURI + ".mp3"
+	
+	response_text = requests.post("https://abair.ie/action/synthesize", cookies=request_cookies, files=text_request_payload)
+	
+	if response_text.status_code != 200:
+		return None
+	
+	xml = ET.fromstring(response_text.content)
+	
 	xpath = ".//word"
 	words = xml.findall(xpath)
-
+	
 	result = ''
 	for word in words:
 			if word.get('input_string') == "SILENCE_TOKEN":
@@ -119,9 +128,34 @@ def get_pronounciation(input_string, dialect):
 			for syllable in word:
 				for phoneme in syllable:
 					#result += PHONEME_MAP[phoneme.get('symbol')]
+					if phoneme.get('symbol') == 'sil':
+						continue
 					result += map_phoneme(phoneme.get('symbol'), dialect)
 			result += ' '
+	return result
 	
-	soundFile = requests.get(soundFileURL, cookies=request_cookies)
 	
-	return (result, soundFile.content)
+def get_pronounciation_voice(input_string, dialect):
+	request_cookies = {"privacy":"accepted","synthInput":input_string}
+	
+	voice_request_payload = json.loads(synthesise_request_text, strict=False)
+	voice_request_payload["synthinput"]["text"] = input_string + "\n"
+	voice_request_payload["voiceparams"]["name"] = DIALECTS_VOICE[dialect]
+	
+	
+	response_voice = requests.post("https://abair.ie/api2/synthesise", headers={"Content-Type":"application/json"}, data=json.dumps(voice_request_payload))
+	
+	if response_voice.status_code != 200:
+		return None
+	
+	responce_voice_json = response_voice.json()
+	
+	audio = base64.standard_b64decode(responce_voice_json["audioContent"])
+	
+	return audio
+	
+	
+
+	
+def get_pronounciation(input_string, dialect):
+	return (get_pronounciation_text(input_string, dialect), get_pronounciation_voice(input_string, dialect))

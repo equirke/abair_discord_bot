@@ -37,6 +37,11 @@ async def say(ctx, *args):
 	
 	phrase = phrase[:-1]
 	ipa_text, sound = get_pronounciation(phrase, map_dialect(dialect))
-	await ctx.send(phrase + "\n" + ipa_text, file=File(io.BytesIO(sound), filename="abair.mp3"))
 	
+	if sound == None:
+		await ctx.send(phrase + "\n" + ipa_text)
+		return
+	
+	await ctx.send(phrase + "\n" + ipa_text, file=File(io.BytesIO(sound), filename="abair.mp3"))
+	return
 bot.run(os.getenv("BOT_TOKEN"))

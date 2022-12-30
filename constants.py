@@ -90,6 +90,12 @@ DIALECTS = {
   "GC":"ga_CO"
 }
 
+DIALECTS_VOICE = {
+  "ga_MU":"ga_MU_nnc_nemo",
+  "ga_UL":"ga_UL_anb_nemo",
+  "ga_CO":"ga_CO_snc_nemo"
+}
+
 def map_dialect(d):
 	if d not in DIALECTS:
 		return None
