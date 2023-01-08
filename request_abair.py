@@ -4,6 +4,7 @@ from constants import map_phoneme
 from constants import DIALECTS_VOICE
 import json
 import base64
+import aiohttp
 
 
 
@@ -107,32 +108,38 @@ tring","sampleRateHertz":0,"effectsProfileId":[]},"outputType":"JSON"}"""
 
 
 async def get_pronounciation_text(input_string, dialect):
-	text_request_payload = {"dialect":(None,dialect), "inputText": (None,input_string), "synth-mode":(None,"dnn"), "speed":(None,"1.0"), "pitch":(None, "1.0"), "speaker":(None,"female")}
+	text_request_payload = {"dialect":dialect, "inputText": input_string, "synth-mode":"dnn", "speed":"1.0", "pitch": "1.0", "speaker":"female"}
+	text_request_payload_form = aiohttp.FormData()
 	
+	for key, value in text_request_payload.items():
+		text_request_payload_form.add_field(key, value)
 	request_cookies = {"privacy":"accepted","synthInput":input_string}
 	
-	response_text = requests.post("https://abair.ie/action/synthesize", cookies=request_cookies, files=text_request_payload)
-	
-	if response_text.status_code != 200:
-		return None
-	
-	xml = ET.fromstring(response_text.content)
-	
-	xpath = ".//word"
-	words = xml.findall(xpath)
-	
-	result = ''
-	for word in words:
-			if word.get('input_string') == "SILENCE_TOKEN":
-				continue
-			for syllable in word:
-				for phoneme in syllable:
-					#result += PHONEME_MAP[phoneme.get('symbol')]
-					if phoneme.get('symbol') == 'sil':
+	async with aiohttp.ClientSession() as session:
+		async with session.post("https://abair.ie/action/synthesize", cookies=request_cookies, data=text_request_payload_form) as resp:
+			
+			if resp.status != 200:
+				return None
+			
+			response_text = await resp.text()
+			
+			xml = ET.fromstring(response_text)
+			
+			xpath = ".//word"
+			words = xml.findall(xpath)
+			
+			result = ''
+			for word in words:
+					if word.get('input_string') == "SILENCE_TOKEN":
 						continue
-					result += map_phoneme(phoneme.get('symbol'), dialect)
-			result += ' '
-	return result
+					for syllable in word:
+						for phoneme in syllable:
+							#result += PHONEME_MAP[phoneme.get('symbol')]
+							if phoneme.get('symbol') == 'sil':
+								continue
+							result += map_phoneme(phoneme.get('symbol'), dialect)
+					result += ' '
+			return result
 	
 	
 async def get_pronounciation_voice(input_string, dialect):
@@ -142,17 +149,16 @@ async def get_pronounciation_voice(input_string, dialect):
 	voice_request_payload["synthinput"]["text"] = input_string + "\n"
 	voice_request_payload["voiceparams"]["name"] = DIALECTS_VOICE[dialect]
 	
-	
-	response_voice = requests.post("https://abair.ie/api2/synthesise", headers={"Content-Type":"application/json"}, data=json.dumps(voice_request_payload))
-	
-	if response_voice.status_code != 200:
-		return None
-	
-	responce_voice_json = response_voice.json()
-	
-	audio = base64.standard_b64decode(responce_voice_json["audioContent"])
-	
-	return audio
+	async with aiohttp.ClientSession() as session:
+		async with session.post("https://abair.ie/api2/synthesise", headers={"Content-Type":"application/json"}, data=json.dumps(voice_request_payload)) as resp:
+			if resp.status != 200:
+				return None
+			
+			responce_voice_json = await resp.json()
+			
+			audio = base64.standard_b64decode(responce_voice_json["audioContent"])
+			
+			return audio
 	
 	
 
