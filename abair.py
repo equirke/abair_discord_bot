@@ -36,7 +36,7 @@ async def say(ctx, *args):
 		phrase += word + " "
 	
 	phrase = phrase[:-1]
-	ipa_text, sound = get_pronounciation(phrase, map_dialect(dialect))
+	ipa_text, sound = await get_pronounciation(phrase, map_dialect(dialect))
 	
 	if sound == None:
 		await ctx.send(phrase + "\n" + ipa_text)

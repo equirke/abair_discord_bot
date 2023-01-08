@@ -106,7 +106,7 @@ der":"UNSPECIFIED"},"audioconfig":{"audioEncoding":"LINEAR16","speakingRate":1,"
 tring","sampleRateHertz":0,"effectsProfileId":[]},"outputType":"JSON"}"""
 
 
-def get_pronounciation_text(input_string, dialect):
+async def get_pronounciation_text(input_string, dialect):
 	text_request_payload = {"dialect":(None,dialect), "inputText": (None,input_string), "synth-mode":(None,"dnn"), "speed":(None,"1.0"), "pitch":(None, "1.0"), "speaker":(None,"female")}
 	
 	request_cookies = {"privacy":"accepted","synthInput":input_string}
@@ -135,7 +135,7 @@ def get_pronounciation_text(input_string, dialect):
 	return result
 	
 	
-def get_pronounciation_voice(input_string, dialect):
+async def get_pronounciation_voice(input_string, dialect):
 	request_cookies = {"privacy":"accepted","synthInput":input_string}
 	
 	voice_request_payload = json.loads(synthesise_request_text, strict=False)
@@ -157,5 +157,8 @@ def get_pronounciation_voice(input_string, dialect):
 	
 
 	
-def get_pronounciation(input_string, dialect):
-	return (get_pronounciation_text(input_string, dialect), get_pronounciation_voice(input_string, dialect))
+async def get_pronounciation(input_string, dialect):
+	pronounciation_voice_promise = get_pronounciation_voice(input_string, dialect)
+	pronounciation_text_promise = get_pronounciation_text(input_string, dialect)
+	
+	return (await pronounciation_text_promise, await pronounciation_voice_promise)
