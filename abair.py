@@ -1,5 +1,5 @@
 from discord.ext import commands 
-from discord import Intents, File
+from discord import Intents
 import os
 
 intents = Intents(messages=True, guilds=True)

@@ -1,6 +1,6 @@
 import xml.etree.ElementTree as ET
-from constants import map_phoneme
-from constants import DIALECTS_VOICE
+from .constants import map_phoneme
+from .constants import DIALECTS_VOICE
 import json
 import base64
 import aiohttp
