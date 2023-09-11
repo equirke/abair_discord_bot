@@ -24,6 +24,7 @@ GU (Gaeilig Uladh, Gaoth Dobhair) agus GC (Gaeilge Chonnacht, Conamara)\n\
 
     async def say(self, ctx, dialect, *args):
         if len(args) < 1:
+            await ctx.send("Caithfidh mé rud a rá")
             return
 
         phrase = ""
@@ -33,7 +34,7 @@ GU (Gaeilig Uladh, Gaoth Dobhair) agus GC (Gaeilge Chonnacht, Conamara)\n\
         phrase = phrase[:-1]
 
         if len(phrase) > 2000:
-            await ctx.send("uasmhéid 2000 caractar")
+            await ctx.send("Uasmhéid 2000 caractar")
             return
 
         ipa_text, sound = await get_pronunciation(phrase, dialect)
