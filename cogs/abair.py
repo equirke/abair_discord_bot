@@ -1,4 +1,5 @@
 import io
+import datetime
 
 from discord import File
 from discord.ext import commands
@@ -43,11 +44,13 @@ Formáid !abair <Canúint> <abairt>.""")
             await ctx.send(phrase + "\n" + ipa_text)
             return
 
+        filename = "abair_" + datetime.datetime.now().strftime("%Y_%m_%d_%H%M%S%f") + ".mp3"
+
         if ipa_text is None:
-            await ctx.send("", file=File(io.BytesIO(sound), filename="abair.mp3"))
+            await ctx.send("", file=File(io.BytesIO(sound), filename=filename))
             return
 
-        await ctx.send(phrase + "\n" + ipa_text, file=File(io.BytesIO(sound), filename="abair.mp3"))
+        await ctx.send(phrase + "\n" + ipa_text, file=File(io.BytesIO(sound), filename=filename))
         return
 
     @abair.command(name='gm')

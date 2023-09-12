@@ -1,5 +1,5 @@
 import io
-
+from pathvalidate import sanitize_filename
 from discord import File
 from discord.ext import commands
 
@@ -40,12 +40,14 @@ class Bruidhinn(commands.Cog):
             await ctx.send(word + "\n" + ipa_text)
             return
 
+        filename = sanitize_filename(f'{word}.mp3')
+
         if ipa_text is None:
-            await ctx.send("", file=File(io.BytesIO(sound), filename="bruidhinn.mp3"))
+            await ctx.send("", file=File(io.BytesIO(sound), filename=filename))
             return
 
 
-        await ctx.send(word + "\n" + ipa_text, file=File(io.BytesIO(sound), filename="bruidhinn.mp3"))
+        await ctx.send(word + "\n" + ipa_text, file=File(io.BytesIO(sound), filename=filename))
         return
 
 
