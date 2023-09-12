@@ -32,7 +32,7 @@ async def get_pronunciation_text_and_voice(word):
 
                 return response_json[0]['ipa'], audio
 
-async def get_recommendations(word):
+async def get_recommendations_request(word):
 
     text_request_payload_form = aiohttp.FormData()
     text_request_payload_form.add_field("q", word)
@@ -48,3 +48,14 @@ async def get_recommendations(word):
                 return None
 
             return response_json
+
+async def get_recommendations(word):
+    recommendations_json = get_recommendations_request(word)
+    if recommendations_json is None:
+        return None
+
+    recommendations = ""
+    for recommendation in recommendations_json:
+        recommendations += recommendation + "\n"
+
+    return recommendations

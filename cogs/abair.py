@@ -8,7 +8,7 @@ from .abair_utils.abair_request import get_pronunciation
 
 class Abair(commands.Cog):
     """This Cog allows enables a discord bot to transcribe Irish text
-     providing an IPA transcription as well as voice."""
+     providing an IPA transcription as well as TTS voice recording."""
 
     def __init__(self, bot):
         self.bot = bot
@@ -19,23 +19,23 @@ class Abair(commands.Cog):
             """Roghnaigh canúint led thoil. \
 Tá trí rogha agat. GM (Gaolainn na Mumhan, Corca Dhuibhne), \
 GU (Gaeilig Uladh, Gaoth Dobhair) agus GC (Gaeilge Chonnacht, Conamara)\n\
- Formáid !abair <Canúint> <abairt>""")
+Formáid !abair <Canúint> <abairt>.""")
         return
 
     async def say(self, ctx, dialect, *args):
         if len(args) < 1:
-            await ctx.send("Caithfidh mé rud a rá")
+            await ctx.send("Caithfidh mé rud éigin a rá.")
             return
 
         phrase = ""
         for word in args:
             phrase += word + " "
 
-        phrase = phrase[:-1]
+            if len(phrase) > 2000:
+                await ctx.send("Uasmhéid 2000 caractar")
+                return
 
-        if len(phrase) > 2000:
-            await ctx.send("Uasmhéid 2000 caractar")
-            return
+        phrase = phrase[:-1]
 
         ipa_text, sound = await get_pronunciation(phrase, dialect)
 

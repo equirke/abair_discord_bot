@@ -7,14 +7,15 @@ from .bruidhinn_utils.bruidhinn_request import get_pronunciation_text_and_voice,
 
 
 class Bruidhinn(commands.Cog):
-
+    """This Cog allows enables a discord bot to transcribe individual Scots Gàidhlig words
+     providing an IPA transcription as well as a voice recording"""
     def __init__(self, bot):
         self.bot = bot
 
     @commands.command()
     async def bruidhinn(self, ctx, *args):
         if len(args) > 1:
-            await ctx.send("I must say something")
+            await ctx.send("Feumaidh mi nì-eigin a bhruidhinn.")
             return
 
         word = args[0]
@@ -24,12 +25,9 @@ class Bruidhinn(commands.Cog):
         if result is None:
             recommendations = await get_recommendations(word)
             if recommendations is None:
-                await ctx.send("I cannot find an entry")
+                await ctx.send("Cha do lorg mi am focal sin")
                 return
-            all_recommendations = ""
-            for recommendation in recommendations:
-                all_recommendations += recommendation + "\n"
-            await ctx.send(f"I could not find {word} but I did find:{all_recommendations}")
+            await ctx.send(f"Cha do lorg mi {word} ach lorg mi:\n{recommendations}")
             return
 
         (ipa_text, sound) = result
