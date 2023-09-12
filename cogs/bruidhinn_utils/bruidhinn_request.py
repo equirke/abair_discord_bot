@@ -50,7 +50,7 @@ async def get_recommendations_request(word):
             return response_json
 
 async def get_recommendations(word):
-    recommendations_json = get_recommendations_request(word)
+    recommendations_json = await get_recommendations_request(word)
     if recommendations_json is None:
         return None
 

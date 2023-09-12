@@ -14,8 +14,12 @@ class Bruidhinn(commands.Cog):
 
     @commands.command()
     async def bruidhinn(self, ctx, *args):
-        if len(args) > 1:
+        if len(args) == 0:
             await ctx.send("Feumaidh mi nì-eigin a bhruidhinn.")
+            return
+
+        if len(args) > 1:
+            await ctx.send("Chan urrainn dhomh ach aon fhocal a lorg anns an àm cheudna.")
             return
 
         word = args[0]
@@ -27,7 +31,7 @@ class Bruidhinn(commands.Cog):
             if recommendations is None:
                 await ctx.send("Cha do lorg mi am focal sin")
                 return
-            await ctx.send(f"Cha do lorg mi {word} ach lorg mi:\n{recommendations}")
+            await ctx.send(f"Cha do lorg mi am focal \"{word}\" ach lorg mi:\n{recommendations}.")
             return
 
         (ipa_text, sound) = result
