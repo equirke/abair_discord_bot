@@ -18,8 +18,8 @@ class Abair(commands.Cog):
     async def abair(self, ctx):
         await ctx.send(
             """Roghnaigh canúint led thoil. \
-Tá trí rogha agat. GM (Gaolainn na Mumhan, Corca Dhuibhne), \
-GU (Gaeilig Uladh, Gaoth Dobhair) agus GC (Gaeilge Chonnacht, Conamara)\n\
+Tá trí rogha agat. gm (Gaolainn na Mumhan, Corca Dhuibhne), \
+gu (Gaeilig Uladh, Gaoth Dobhair) agus gc (Gaeilge Chonnacht, Conamara)\n\
 Formáid !abair <Canúint> <abairt>.""")
         return
 
@@ -53,17 +53,17 @@ Formáid !abair <Canúint> <abairt>.""")
         await ctx.send(phrase + "\n" + ipa_text, file=File(io.BytesIO(sound), filename=filename))
         return
 
-    @abair.command(name='gm')
+    @abair.command(name='gm', aliases=['GM', 'Gaolainn'])
     async def connacht(self, ctx, *args):
         await self.say(ctx, 'ga_MU', *args)
         return
 
-    @abair.command(name='gc')
+    @abair.command(name='gc', aliases=['GC', 'Gaeilge'])
     async def munster(self, ctx, *args):
         await self.say(ctx, 'ga_CO', *args)
         return
 
-    @abair.command(name='gu')
+    @abair.command(name='gu', aliases=['GU', 'Gaeilic'])
     async def ulster(self, ctx, *args):
         await self.say(ctx, 'ga_UL', *args)
         return
