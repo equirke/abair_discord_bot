@@ -53,7 +53,7 @@ Formáid !abair <Canúint> <abairt>.""")
         await ctx.send(phrase + "\n" + ipa_text, file=File(io.BytesIO(sound), filename=filename))
         return
 
-    @abair.command(name='gm', aliases=['GM', 'Gaolainn'])
+    @abair.command(name='gm', aliases=['GM', 'Gaolainn', 'Gaelainn'])
     async def connacht(self, ctx, *args):
         await self.say(ctx, 'ga_MU', *args)
         return
@@ -63,7 +63,7 @@ Formáid !abair <Canúint> <abairt>.""")
         await self.say(ctx, 'ga_CO', *args)
         return
 
-    @abair.command(name='gu', aliases=['GU', 'Gaeilic'])
+    @abair.command(name='gu', aliases=['GU', 'Gaeilic', 'Gaeilig'])
     async def ulster(self, ctx, *args):
         await self.say(ctx, 'ga_UL', *args)
         return
