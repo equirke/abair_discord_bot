@@ -27,7 +27,7 @@ Cuireann an bot seo foghraíocht na Gaeilge ar fáil d'úsáideoirí Discord
 
 Úsáidtear APIs de chuid abair.ie le trascríbhinn IPA agus taifead sintéiseach an fhocail nó na habairte á rá a chur ar fáil 
 
-Cuirtear an bot ar siúl nuair a scrítear '!abair'. Roghnaítear an chanúint leis an gcéad 'fhocal'. Tá tri rogha ann.
+Cuirtear an bot ar siúl nuair a scrítear '!abair'. Roghnaítear an chanúint leis an gcéad 'fhocal'. Tá trí rogha ann.
 - gc = Gaeilge Chonnacht
 - gm = Gaolainn na Mumhan
 - gu = Gaeilig Uladh
@@ -36,7 +36,8 @@ Déanfaidh an bot aithris ar an abairt sa gcainéal a ndearnadh an t-ordú. Beid
 
 e.g.
 `!abair gc Táim anseo go fóill`
-will get the response
+
+Gheobhaidh an méid sin thuas an freagra thíos
 ```
 Táim anseo go fóill
 tˠɑːmʲ əɴˠʃo gˠə fˠoːʟʲ
