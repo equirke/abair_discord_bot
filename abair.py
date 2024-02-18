@@ -8,4 +8,5 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 
 bot.load_extension('cogs.abair')
 bot.load_extension('cogs.bruidhinn')
+bot.remove_command("help")
 bot.run(os.getenv("BOT_TOKEN"))
