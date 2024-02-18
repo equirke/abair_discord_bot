@@ -148,7 +148,7 @@ async def get_pronunciation_voice(input_string, dialect):
     voice_request_payload["voiceparams"]["name"] = DIALECTS_VOICE[dialect]
 
     async with aiohttp.ClientSession() as session:
-        async with session.post("https://abair.ie/api2/synthesise", headers={"Content-Type": "application/json"},
+        async with session.post("https://phoneticsrv3.lcs.tcd.ie/api2/synthesise", headers={"Content-Type": "application/json"},
                                 data=json.dumps(voice_request_payload)) as resp:
             if resp.status != 200:
                 return None
